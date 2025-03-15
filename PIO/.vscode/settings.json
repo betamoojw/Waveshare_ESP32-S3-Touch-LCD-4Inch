@@ -1,0 +1,24 @@
+{
+    "files.associations": {
+        "array": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "format": "cpp",
+        "initializer_list": "cpp",
+        "span": "cpp",
+        "system_error": "cpp",
+        "cstdlib": "cpp",
+        "*.tcc": "cpp",
+        "cstdint": "cpp",
+        "bitset": "cpp",
+        "regex": "cpp",
+        "random": "cpp",
+        "chrono": "cpp",
+        "typeinfo": "cpp"
+    }
+}

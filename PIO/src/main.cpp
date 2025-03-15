@@ -1,66 +1,90 @@
+#define SMARTPANEL_DEFINE_GLOBAL_VARS // only in one source file, main.cpp!
+#include "main.h"
 #include <Arduino.h>
+#include "HWCDC.h"
+#include <LittleFS.h>
+#include "file_sys_utils.h"
 #include <ESP_Panel_Library.h>
 #include <lvgl.h>
 #include "lvgl_port_v8.h"
 
 #include <ESP_IOExpander_Library.h>
+#include "io_expander_warapper.h"
 // #include <demos/lv_demos.h>
 // #include <examples/lv_examples.h>
 #include <ui.h>
-#include "HWCDC.h"
 
-HWCDC USBSerial;
+HWCDC USBSerial; // Definition of the USBSerial object
 
-#define EXAMPLE_CHIP_NAME TCA95xx_8bit
-#define EXAMPLE_I2C_NUM (1)
-#define EXAMPLE_I2C_SDA_PIN (8)
-#define EXAMPLE_I2C_SCL_PIN (9)
+#if defined(SMARTPANEL_ENABLE_RS485)
+#include <HardwareSerial.h>
+HardwareSerial SerialPort(2); // use UART2
 
-#define _EXAMPLE_CHIP_CLASS(name, ...) ESP_IOExpander_##name(__VA_ARGS__)
-#define EXAMPLE_CHIP_CLASS(name, ...) _EXAMPLE_CHIP_CLASS(name, ##__VA_ARGS__)
+void task_rs485_interface_loop(void *pvParameters)
+{
+  while (1)
+  {
+    if (Serial2.available())
+    {
+      char buffer[256];      // Buffer to store input data
+      size_t bufferSize = 0; // Current size of data in buffer
 
+      while (Serial2.available() > 0)
+      {
+        char input = Serial2.read();
+
+        // Check if the buffer is full, or a newline character is received
+        if (bufferSize >= sizeof(buffer) || input == '\r')
+        {
+          // Send the entire buffer via Serial2
+          Serial2.println(buffer);
+          USBSerial.println(buffer);
+          delay(10);
+          // Reset buffer and size for the next input
+          bufferSize = 0;
+          memset(buffer, 0, sizeof(buffer));
+        }
+        else
+          buffer[bufferSize++] = input; // Store input in buffer
+      }
+    }
+    delay(1);
+  }
+}
+#endif
+
+#if defined(SMARTPANEL_ENABLE_CAN)
+#include "twai_port.h"
+#endif
+
+#if defined(SMARTPANEL_ENABLE_CLI)
+#include "cli_interface.h"
+#endif
+
+#include "beeper.h"
+
+static bool driver_installed = false; // Flag to check if the driver is installed
 ESP_IOExpander *expander = NULL;
 
-void setup() {
-  // expander = new EXAMPLE_CHIP_CLASS(EXAMPLE_CHIP_NAME,
-  //                                   (i2c_port_t)EXAMPLE_I2C_NUM, ESP_IO_EXPANDER_I2C_TCA9554_ADDRESS_000,
-  //                                   EXAMPLE_I2C_SCL_PIN, EXAMPLE_I2C_SDA_PIN);
-
-  // expander->init();
-  // // esp_err_t initStatus = expander->begin();
-  // expander->begin();
-
-  // if (initStatus == ESP_OK) {
-    USBSerial.println("Expander initialized successfully.");
-  // } else {
-    expander = new EXAMPLE_CHIP_CLASS(EXAMPLE_CHIP_NAME,
-                                      (i2c_port_t)1, ESP_IO_EXPANDER_I2C_TCA9554_ADDRESS_000,
-                                      7, 15);
-    expander->init();
-    expander->begin();
-  // }
-
-  pinMode(16, OUTPUT); 
-  digitalWrite(16, LOW);
-
-  USBSerial.println("Original status:");
-  expander->printStatus();
-  expander->pinMode(5, OUTPUT);
-  expander->digitalWrite(5, HIGH);
-  expander->pinMode(0, OUTPUT);
-  expander->digitalWrite(0, LOW);
-  expander->pinMode(2, OUTPUT);
-  expander->digitalWrite(2, LOW);
-  expander->printStatus();
-  delay(200);
-  expander->digitalWrite(5, LOW);
-  expander->digitalWrite(2, HIGH);
-  expander->digitalWrite(0, HIGH);
-  expander->printStatus();
-
-  String title = "LVGL porting example";
-
+void setup()
+{
   USBSerial.begin(115200);
+  USBSerial.println("USBSerial initialized.");
+
+  char msg[128];
+  snprintf(msg, sizeof(msg), "---Smart Panel: %s %d INIT---", SMARTPANEL_VERSION, VERSION);
+  USBSerial.println(msg);
+
+  fs_mount();
+
+  pinMode(TP_INT_PIN, OUTPUT);
+  digitalWrite(TP_INT_PIN, LOW);
+
+  // Initialize the IO expander
+  io_expander_init(expander);
+
+  String title = "Smart Panel";
+
   USBSerial.println(title + " start");
 
   USBSerial.println("Initialize panel device");
@@ -95,9 +119,31 @@ void setup() {
   lvgl_port_unlock();
 
   USBSerial.println(title + " end");
+
+#if defined(SMARTPANEL_ENABLE_RS485)
+  Serial2.begin(115200, SERIAL_8N1, RS485_RXD_PIN, RS485_TXD_PIN);
+#endif
+
+#if defined(SMARTPANEL_ENABLE_CAN)
+  driver_installed = twai_init();
+#endif
+
+#if defined(SMARTPANEL_ENABLE_CLI)
+  cli_init();
+#endif
 }
 
-void loop() {
-  USBSerial.println("IDLE loop");
-  delay(1000);
+void loop()
+{
+#if defined(SMARTPANEL_ENABLE_CLI)
+  cli_task();
+#endif
+
+#if defined(SMARTPANEL_ENABLE_RS485)
+  task_rs485_interface_loop(NULL);
+#endif
+
+#if defined(SMARTPANEL_ENABLE_CAN)
+  twai_task();
+#endif
 }
