@@ -4,7 +4,7 @@
  * Opts: --bpp 8 --size 30 --font /Users/redhatdesign/Desktop/Coffee wending/SLS/assets/Font/Inter-Medium.ttf -o /Users/redhatdesign/Desktop/Coffee wending/SLS/assets/Font/ui_font_in30.c --format lvgl -r 0x20-0x7f --no-compress --no-prefilter
  ******************************************************************************/
 
-#include "../ui.h"
+#include "ui.h"
 
 #ifndef UI_FONT_IN30
 #define UI_FONT_IN30 1
