@@ -7264,7 +7264,8 @@
                 "InheritedType": 11
               }
             ],
-            "saved_objtypeKey": "IMAGE"
+            "saved_objtypeKey": "IMAGE",
+            "tree_closed": true
           }
         ],
         "isPage": true,
@@ -9406,17 +9407,17 @@
     "image": "",
     "export_temp_image": false,
     "force_export_images": false,
-    "flat_export": true,
+    "flat_export": false,
     "advanced_alpha": false,
     "pointfilter": false,
     "theme_simplified": false,
     "theme_dark": true,
     "theme_color1": 5,
     "theme_color2": 0,
-    "uiExportFolderPath": "E:\\MTech\\Coffee vending\\PIO\\lib\\ui\\src",
-    "projectExportFolderPath": "E:\\MTech\\Coffee vending\\SLS\\Template\\Coffee wending",
+    "uiExportFolderPath": "C:\\Users\\Maxwell_tech\\Downloads\\Smart_Panel_4Inch\\ui\\src",
+    "projectExportFolderPath": "C:\\Users\\Maxwell_tech\\Downloads\\Smart_Panel_4Inch",
     "custom_variable_prefix": "uic",
-    "backup_cnt": 123,
+    "backup_cnt": 124,
     "autosave_cnt": 0,
     "lvgl_version": "8.3.11",
     "callfuncsexport": "C_FILE",

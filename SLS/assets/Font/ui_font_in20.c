@@ -4,7 +4,7 @@
  * Opts: --bpp 8 --size 20 --font /Users/redhatdesign/Desktop/Coffee vending/SLS/assets/Font/Inter-Medium.ttf -o /Users/redhatdesign/Desktop/Coffee vending/SLS/assets/Font/ui_font_in20.c --format lvgl -r 0x20-0x7f --no-compress --no-prefilter
  ******************************************************************************/
 
-#include "ui.h"
+#include "../ui.h"
 
 #ifndef UI_FONT_IN20
 #define UI_FONT_IN20 1

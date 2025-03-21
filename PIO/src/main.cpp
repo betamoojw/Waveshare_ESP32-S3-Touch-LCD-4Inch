@@ -14,6 +14,8 @@
 // #include <examples/lv_examples.h>
 #include <ui.h>
 
+#include "web_server.h"
+
 HWCDC USBSerial; // Definition of the USBSerial object
 
 #if defined(SMARTPANEL_ENABLE_RS485)
@@ -131,6 +133,7 @@ void setup()
 #if defined(SMARTPANEL_ENABLE_CLI)
   cli_init();
 #endif
+
 }
 
 void loop()
@@ -146,4 +149,5 @@ void loop()
 #if defined(SMARTPANEL_ENABLE_CAN)
   twai_task();
 #endif
+
 }
