@@ -19,6 +19,8 @@
         "regex": "cpp",
         "random": "cpp",
         "chrono": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "functional": "cpp",
+        "compare": "cpp"
     }
 }

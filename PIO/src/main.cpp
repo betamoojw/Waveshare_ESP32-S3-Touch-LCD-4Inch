@@ -1,6 +1,7 @@
 #define SMARTPANEL_DEFINE_GLOBAL_VARS // only in one source file, main.cpp!
 #include "main.h"
 #include <Arduino.h>
+#include <string>
 #include "HWCDC.h"
 #include <LittleFS.h>
 #include "file_sys_utils.h"
@@ -64,9 +65,27 @@ void task_rs485_interface_loop(void *pvParameters)
 #endif
 
 #include "beeper.h"
+#include "modbus/modbus.h"
 
 static bool driver_installed = false; // Flag to check if the driver is installed
 ESP_IOExpander *expander = NULL;
+
+
+
+int32_t read_serial(const char port[], uint8_t *buf, uint16_t count, int32_t byte_timeout_ms)
+{
+    Serial2.setTimeout(byte_timeout_ms);
+    return Serial2.readBytes(buf, count);
+}
+
+int32_t write_serial(const char port[], const uint8_t *buf, uint16_t count, int32_t byte_timeout_ms)
+{
+    Serial2.setTimeout(byte_timeout_ms);
+    return Serial2.write(buf, count);
+}
+
+
+
 
 void setup()
 {
@@ -126,6 +145,16 @@ void setup()
   Serial2.begin(115200, SERIAL_8N1, RS485_RXD_PIN, RS485_TXD_PIN);
 #endif
 
+  Serial2.begin(115200, SERIAL_8N1, RS485_RXD_PIN, RS485_TXD_PIN);
+
+  const std::string data = "UART initialized on Serial2.\n";
+  Serial2.write(data.c_str(), data.length());
+
+  modbus_set_serial_read(read_serial);
+  modbus_set_serial_write(write_serial);
+  modbus_client_create_RTU(10);
+
+
 #if defined(SMARTPANEL_ENABLE_CAN)
   driver_installed = twai_init();
 #endif
@@ -142,12 +171,34 @@ void loop()
   cli_task();
 #endif
 
-#if defined(SMARTPANEL_ENABLE_RS485)
-  task_rs485_interface_loop(NULL);
-#endif
+// #if defined(SMARTPANEL_ENABLE_RS485)
+//   task_rs485_interface_loop(NULL);
+// #endif
 
 #if defined(SMARTPANEL_ENABLE_CAN)
   twai_task();
 #endif
 
+
+  {
+    std::vector<uint16_t> params = {0, 0, 0, 0, 0, 0};
+    uint16_t quantity = params.size();
+    String tempStr = "";
+    for (uint16_t i = 0; i < quantity; i++)
+    {         
+        params[i] = random(0, 2);
+        if (i < quantity - 1)
+        {
+            tempStr += String(params[i]) + ",";
+        }
+        else
+        {
+            tempStr += String(params[i]);
+        }
+    }
+    // LOG_I(TAG, "Set holding Register: " + tempStr);
+    // Call function with vector's data
+    uint16_t address = 32;
+    modbus_client_set_parameters(params.data(), address, quantity);
+  }
 }

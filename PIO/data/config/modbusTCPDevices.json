@@ -1,0 +1,119 @@
+{
+    "modbusInterface": {
+        "ipAddress": "192.168.1.100",
+        "port": 502,
+        "timeout": "2000",
+        "retries": 3,
+        "protocol": "TCP"
+    },
+    "devices": [
+        {
+            "slaveId": 1,
+            "registerAddressOffset": 0,
+            "relays": [
+                {
+                    "id": 1,
+                    "registerAddress": 0,
+                    "state": "off",
+                    "description": "Relay 1"
+                },
+                {
+                    "id": 2,
+                    "registerAddress": 1,
+                    "state": "off",
+                    "description": "Relay 2"
+                },
+                {
+                    "id": 3,
+                    "registerAddress": 2,
+                    "state": "off",
+                    "description": "Relay 3"
+                },
+                {
+                    "id": 4,
+                    "registerAddress": 3,
+                    "state": "off",
+                    "description": "Relay 4"
+                },
+                {
+                    "id": 5,
+                    "registerAddress": 4,
+                    "state": "off",
+                    "description": "Relay 5"
+                },
+                {
+                    "id": 6,
+                    "registerAddress": 5,
+                    "state": "off",
+                    "description": "Relay 6"
+                },
+                {
+                    "id": 7,
+                    "registerAddress": 6,
+                    "state": "off",
+                    "description": "Relay 7"
+                },
+                {
+                    "id": 8,
+                    "registerAddress": 7,
+                    "state": "off",
+                    "description": "Relay 8"
+                }
+            ]
+        },
+        {
+            "slaveId": 2,
+            "registerAddressOffset": 0,
+            "relays": [
+                {
+                    "id": 1,
+                    "registerAddress": 0,
+                    "state": "off",
+                    "description": "Relay 1"
+                },
+                {
+                    "id": 2,
+                    "registerAddress": 1,
+                    "state": "off",
+                    "description": "Relay 2"
+                },
+                {
+                    "id": 3,
+                    "registerAddress": 2,
+                    "state": "off",
+                    "description": "Relay 3"
+                },
+                {
+                    "id": 4,
+                    "registerAddress": 3,
+                    "state": "off",
+                    "description": "Relay 4"
+                },
+                {
+                    "id": 5,
+                    "registerAddress": 4,
+                    "state": "off",
+                    "description": "Relay 5"
+                },
+                {
+                    "id": 6,
+                    "registerAddress": 5,
+                    "state": "off",
+                    "description": "Relay 6"
+                },
+                {
+                    "id": 7,
+                    "registerAddress": 6,
+                    "state": "off",
+                    "description": "Relay 7"
+                },
+                {
+                    "id": 8,
+                    "registerAddress": 7,
+                    "state": "off",
+                    "description": "Relay 8"
+                }
+            ]
+        }
+    ]
+}

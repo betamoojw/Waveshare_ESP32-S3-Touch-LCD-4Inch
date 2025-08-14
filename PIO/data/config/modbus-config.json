@@ -1,0 +1,6 @@
+{
+    "deviceAddress": 1,
+    "baudrate": "19200",
+    "parity": "n",
+    "stopbits": "1"
+}

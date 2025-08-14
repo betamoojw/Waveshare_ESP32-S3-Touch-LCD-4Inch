@@ -1,0 +1,137 @@
+{
+    "modbusInterface": {
+        "baudrate": "19200",
+        "parity": "n",
+        "stopbits": "1",
+        "databits": "8",
+        "timeout": "1000",
+        "retries": 3,
+        "protocol": "RTU"
+    },
+    "devices": [
+        {
+            "slaveId": 1,
+            "registerAddressOffset": 0,
+            "relays": [
+                {
+                    "id": 1,
+                    "registerAddress": 0,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 1"
+                },
+                {
+                    "id": 2,
+                    "registerAddress": 1,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 2"
+                },
+                {
+                    "id": 3,
+                    "registerAddress": 2,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 3"
+                },
+                {
+                    "id": 4,
+                    "registerAddress": 3,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 4"
+                },
+                {
+                    "id": 5,
+                    "registerAddress": 4,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 5"
+                },
+                {
+                    "id": 6,
+                    "registerAddress": 5,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 6"
+                },
+                {
+                    "id": 7,
+                    "registerAddress": 6,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 7"
+                },
+                {
+                    "id": 8,
+                    "registerAddress": 7,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 8"
+                }
+            ]
+        },
+        {
+            "slaveId": 2,
+            "registerAddressOffset": 0,
+            "relays": [
+                {
+                    "id": 1,
+                    "registerAddress": 0,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 1"
+                },
+                {
+                    "id": 2,
+                    "registerAddress": 1,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 2"
+                },
+                {
+                    "id": 3,
+                    "registerAddress": 2,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 3"
+                },
+                {
+                    "id": 4,
+                    "registerAddress": 3,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 4"
+                },
+                {
+                    "id": 5,
+                    "registerAddress": 4,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 5"
+                },
+                {
+                    "id": 6,
+                    "registerAddress": 5,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 6"
+                },
+                {
+                    "id": 7,
+                    "registerAddress": 6,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 7"
+                },
+                {
+                    "id": 8,
+                    "registerAddress": 7,
+                    "state": false,
+                    "enabled": true,
+                    "description": "Relay 8"
+                }
+            ]
+        }
+    ]
+}
