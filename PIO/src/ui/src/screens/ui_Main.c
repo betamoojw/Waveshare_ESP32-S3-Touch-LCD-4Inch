@@ -1478,7 +1478,13 @@ void ui_main_screen_init(void)
 
     lv_obj_add_event_cb(ui_setting, ui_event_setting, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_layoutBtn, ui_event_layoutBtn, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Switch3, ui_event_Switch3, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Switch4, ui_event_Switch4, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Switch7, ui_event_Switch7, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Switch8, ui_event_Switch8, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_lightDimming2, ui_event_lightDimming2, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Switch6, ui_event_Switch6, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_lightDimming3, ui_event_lightDimming3, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Switch9, ui_event_Switch9, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Arc1, ui_event_Arc1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Btn6, ui_event_Btn6, LV_EVENT_ALL, NULL);

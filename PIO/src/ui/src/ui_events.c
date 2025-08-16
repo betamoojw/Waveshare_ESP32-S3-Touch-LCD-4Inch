@@ -7,21 +7,12 @@
 #include "ui.h"
 #include <Arduino.h>
 
-void config_set_backlight(lv_event_t *e)
-{
-    lv_obj_t *slider = lv_event_get_target(e);
-    float brightness = 100.0;
-    if (slider == ui_configBrightnessSlider)
-    {
-        brightness = (float) lv_slider_get_value(slider) / 100.0;
-        // 0 is off, 0.5 is half and 1 is full brightness.
-    }
-    static bool state = false;
-
-	uint16_t data[] = {0x0000};
+void DeskLightSwitch(lv_event_t *e)
+{   
+    static bool state = true;
+    uint16_t data[] = {0x0000};
     const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
     const uint16_t start_address = 32;
-
     if (state)
     {
         data[0] = 1;
@@ -35,36 +26,61 @@ void config_set_backlight(lv_event_t *e)
     state = !state;
 }
 
-void DeskLightSwitch(lv_event_t *e)
-{
-    const uint16_t data[] = {0x0002};
-    const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
-    const uint16_t start_address = 32;
-    modbus_client_set_parameters(data, start_address, num_registers);
-}
-
 void WallLightSwitch(lv_event_t *e)
 {
-    const uint16_t data[] = {0x0002};
+    static bool state = true;
+    uint16_t data[] = {0x0000};
     const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
     const uint16_t start_address = 33;
+    if (state)
+    {
+        data[0] = 1;
+    }
+    else
+    {
+        data[0] = 0;
+    }
     modbus_client_set_parameters(data, start_address, num_registers);
+
+    state = !state;
 }
 
 void CircleLedSwitch(lv_event_t *e)
 {
-    const uint16_t data[] = {0x0002};
+    static bool state = true;
+    uint16_t data[] = {0x0000};
     const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
     const uint16_t start_address = 34;
+    if (state)
+    {
+        data[0] = 1;
+    }
+    else
+    {
+        data[0] = 0;
+    }
     modbus_client_set_parameters(data, start_address, num_registers);
+
+    state = !state;
 }
 
 void PendantLedSwitch(lv_event_t *e)
 {
-    const uint16_t data[] = {0x0002};
+    static bool state = true;
+    uint16_t data[] = {0x0000};
     const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
     const uint16_t start_address = 35;
+    if (state)
+    {
+        data[0] = 1;
+    }
+    else
+    {
+        data[0] = 0;
+    }
     modbus_client_set_parameters(data, start_address, num_registers);
+
+    state = !state;
 }
 
 void CeilingLedSlider(lv_event_t *e)
@@ -75,4 +91,15 @@ void CeilingLedSlider(lv_event_t *e)
 void CeilingLightSlider(lv_event_t *e)
 {
     // Your code here
+}
+
+void config_set_backlight(lv_event_t *e)
+{
+    lv_obj_t *slider = lv_event_get_target(e);
+    float brightness = 100.0;
+    if (slider == ui_configBrightnessSlider)
+    {
+        brightness = (float) lv_slider_get_value(slider) / 100.0;
+        // 0 is off, 0.5 is half and 1 is full brightness.
+    }
 }
