@@ -7,7 +7,7 @@
 #pragma once
 
 /* Set to 1 if using a supported board */
-#define ESP_PANEL_USE_SUPPORTED_BOARD       (0)         // 0/1
+#define ESP_PANEL_USE_SUPPORTED_BOARD (0) // 0/1
 
 #if ESP_PANEL_USE_SUPPORTED_BOARD
 /**
@@ -24,13 +24,20 @@
  *  - BOARD_ESP32_S3_BOX_3 (ESP32-S3-Box-3 & ESP32-S3-Box-3B): https://github.com/espressif/esp-box/tree/master
  *  - BOARD_ESP32_S3_BOX_3_BETA (ESP32-S3-Box-3(beta)): https://github.com/espressif/esp-box/tree/c4c954888e11250423f083df0067d99e22d59fbe
  *  - BOARD_ESP32_S3_BOX_LITE (ESP32-S3-Box-Lite): https://github.com/espressif/esp-box/tree/master
- *  - BOARD_ESP32_S3_EYE (ESP32-S3-EYE): https://github.com/espressif/esp-who/blob/master/docs/en/get-started/ESP32-S3-EYE_Getting_Started_Guide.md
- *  - BOARD_ESP32_S3_KORVO_2 (ESP32-S3-Korvo-2): https://docs.espressif.com/projects/esp-adf/en/latest/design-guide/dev-boards/user-guide-esp32-s3-korvo-2.html
- *  - BOARD_ESP32_S3_LCD_EV_BOARD (ESP32-S3-LCD-EV-Board): https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-lcd-ev-board/user_guide_v1.4.html
- *  - BOARD_ESP32_S3_LCD_EV_BOARD_V1_5 (ESP32-S3-LCD-EV-Board(v1.5)): https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-lcd-ev-board/user_guide.html
- *  - BOARD_ESP32_S3_LCD_EV_BOARD_2 (ESP32-S3-LCD-EV-Board-2)): https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-lcd-ev-board/user_guide_v1.4.html
- *  - BOARD_ESP32_S3_LCD_EV_BOARD_2_V1_5 (ESP32-S3-LCD-EV-Board-2(v1.5)): https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-lcd-ev-board/user_guide.html
- *  - BOARD_ESP32_S3_USB_OTG (ESP32-S3-USB-OTG): https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-usb-otg/index.html
+ *  - BOARD_ESP32_S3_EYE (ESP32-S3-EYE):
+ * https://github.com/espressif/esp-who/blob/master/docs/en/get-started/ESP32-S3-EYE_Getting_Started_Guide.md
+ *  - BOARD_ESP32_S3_KORVO_2 (ESP32-S3-Korvo-2):
+ * https://docs.espressif.com/projects/esp-adf/en/latest/design-guide/dev-boards/user-guide-esp32-s3-korvo-2.html
+ *  - BOARD_ESP32_S3_LCD_EV_BOARD (ESP32-S3-LCD-EV-Board):
+ * https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-lcd-ev-board/user_guide_v1.4.html
+ *  - BOARD_ESP32_S3_LCD_EV_BOARD_V1_5 (ESP32-S3-LCD-EV-Board(v1.5)):
+ * https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-lcd-ev-board/user_guide.html
+ *  - BOARD_ESP32_S3_LCD_EV_BOARD_2 (ESP32-S3-LCD-EV-Board-2)):
+ * https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-lcd-ev-board/user_guide_v1.4.html
+ *  - BOARD_ESP32_S3_LCD_EV_BOARD_2_V1_5 (ESP32-S3-LCD-EV-Board-2(v1.5)):
+ * https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-lcd-ev-board/user_guide.html
+ *  - BOARD_ESP32_S3_USB_OTG (ESP32-S3-USB-OTG):
+ * https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-usb-otg/index.html
  *
  */
 // #define BOARD_ESP32_C3_LCDKIT
@@ -49,7 +56,8 @@
 /*
  * Elecrow (https://www.elecrow.com):
  *
- *  - BOARD_ELECROW_CROWPANEL_7_0 (ELECROW_CROWPANEL_7_0): https://www.elecrow.com/esp32-display-7-inch-hmi-display-rgb-tft-lcd-touch-screen-support-lvgl.html
+ *  - BOARD_ELECROW_CROWPANEL_7_0 (ELECROW_CROWPANEL_7_0):
+ * https://www.elecrow.com/esp32-display-7-inch-hmi-display-rgb-tft-lcd-touch-screen-support-lvgl.html
  */
 // #define BOARD_ELECROW_CROWPANEL_7_0
 

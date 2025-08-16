@@ -1,8 +1,8 @@
 #ifndef CLI_COMMANDS_H
 #define CLI_COMMANDS_H
 
-#include <Arduino.h>
 #include "embedded_cli.h"
+#include <Arduino.h>
 
 void cli_command(EmbeddedCli *embeddedCli, CliCommand *command);
 void cli_clear(EmbeddedCli *cli, char *args, void *context);

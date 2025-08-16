@@ -1,19 +1,17 @@
-#include <Arduino.h>
 #include "io_expander_warapper.h"
+#include <Arduino.h>
 #include <Logger.h>
 
 #define TAG "IO-EXPANDER"
 
 void io_expander_init(ESP_IOExpander *expander)
 {
-    expander = new IO_EXPANDER_CHIP_CLASS(IO_EXPANDER_CHIP_NAME,
-                                      (i2c_port_t)IO_EXPANDER_I2C_NUM, ESP_IO_EXPANDER_I2C_TCA9554_ADDRESS_000,
-                                      IO_EXPANDER_I2C_SCL_PIN, IO_EXPANDER_I2C_SDA_PIN);
+    expander = new IO_EXPANDER_CHIP_CLASS(IO_EXPANDER_CHIP_NAME, (i2c_port_t) IO_EXPANDER_I2C_NUM, ESP_IO_EXPANDER_I2C_TCA9554_ADDRESS_000,
+                                          IO_EXPANDER_I2C_SCL_PIN, IO_EXPANDER_I2C_SDA_PIN);
 
     expander->init();
     expander->begin();
     LOG_I(TAG, "IO Expander initialized successfully.");
-
 
     LOG_I(TAG, "IO Expander Original status:");
     expander->printStatus();

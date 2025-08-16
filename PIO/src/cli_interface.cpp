@@ -30,58 +30,22 @@ void cli_init()
             ; // Halt if CLI fails to initialize
     }
 
-    embeddedCliAddBinding(cli, {"clear",
-                                "Clears the console",
-                                true,
-                                nullptr,
-                                cli_clear});
+    embeddedCliAddBinding(cli, {"clear", "Clears the console", true, nullptr, cli_clear});
 
-    embeddedCliAddBinding(cli, {"version",
-                                "Print version info",
-                                true,
-                                nullptr,
-                                cli_version});
+    embeddedCliAddBinding(cli, {"version", "Print version info", true, nullptr, cli_version});
 
-    embeddedCliAddBinding(cli, {"reboot",
-                                "Reboot the device",
-                                true,
-                                nullptr,
-                                cli_reboot});
+    embeddedCliAddBinding(cli, {"reboot", "Reboot the device", true, nullptr, cli_reboot});
 
-    embeddedCliAddBinding(cli, {"hello",
-                                "Print hello message",
-                                true,
-                                (void *)"Smart Panel",
-                                cli_hello});
+    embeddedCliAddBinding(cli, {"hello", "Print hello message", true, (void *) "Smart Panel", cli_hello});
 
-    embeddedCliAddBinding(cli, {"get-led",
-                                "Get led status",
-                                true,
-                                nullptr,
-                                cli_get_led});
+    embeddedCliAddBinding(cli, {"get-led", "Get led status", true, nullptr, cli_get_led});
 
-    embeddedCliAddBinding(cli, {"set-led",
-                                "Set led status",
-                                true,
-                                nullptr,
-                                cli_set_led});
+    embeddedCliAddBinding(cli, {"set-led", "Set led status", true, nullptr, cli_set_led});
 
-    embeddedCliAddBinding(cli, {"get-adc",
-                                "Read adc value",
-                                true,
-                                nullptr,
-                                cli_get_adc});
+    embeddedCliAddBinding(cli, {"get-adc", "Read adc value", true, nullptr, cli_get_adc});
 
-    embeddedCliAddBinding(cli, {"set-beeper",
-                                "Set beeper tone",
-                                true,
-                                nullptr,
-                                cli_set_beeper});
-    embeddedCliAddBinding(cli, {"fs_test",
-                                "File system test",
-                                true,
-                                nullptr,
-                                cli_fs_test});
+    embeddedCliAddBinding(cli, {"set-beeper", "Set beeper tone", true, nullptr, cli_set_beeper});
+    embeddedCliAddBinding(cli, {"fs_test", "File system test", true, nullptr, cli_fs_test});
 
     cli->onCommand = cli_command;
     cli->writeChar = writeChar;
@@ -102,5 +66,5 @@ void cli_task()
 
 void writeChar(EmbeddedCli *embeddedCli, char c)
 {
-    SERIAL_DBG.write((uint8_t *)&c, 1);
+    SERIAL_DBG.write((uint8_t *) &c, 1);
 }

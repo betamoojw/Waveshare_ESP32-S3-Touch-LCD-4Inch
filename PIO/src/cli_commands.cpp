@@ -1,20 +1,21 @@
 #include "cli_commands.h"
 #include "FS.h"
-#include <LittleFS.h>
 #include "file_sys_utils.h"
-#include <ESP_IOExpander_Library.h>
 #include "main.h"
+#include <ESP_IOExpander_Library.h>
+#include <LittleFS.h>
 
 #include <Logger.h>
 
-#define TAG "CLI-COMMANDS"
+#define TAG                   "CLI-COMMANDS"
 #define CLI_INTERFACE_VERSION "0.0.1"
 
 void cli_command(EmbeddedCli *embeddedCli, CliCommand *command)
 {
     LOG_I(TAG, "Received command: %S", command->name);
     embeddedCliTokenizeArgs(command->args);
-    for (int i = 1; i <= embeddedCliGetTokenCount(command->args); ++i) {
+    for (int i = 1; i <= embeddedCliGetTokenCount(command->args); ++i)
+    {
         const char *arg = embeddedCliGetToken(command->args, i);
         LOG_I(TAG, "arg %d: %s", i, arg);
     }
@@ -38,7 +39,7 @@ void cli_hello(EmbeddedCli *cli, char *args, void *context)
     LOG_I(TAG, "Hello ");
     if (args == NULL || embeddedCliGetTokenCount(args) == 0)
     {
-        LOG_I(TAG, (const char *)context);
+        LOG_I(TAG, (const char *) context);
     }
     else
     {
@@ -57,7 +58,8 @@ void cli_hello(EmbeddedCli *cli, char *args, void *context)
 void cli_get_led(EmbeddedCli *cli, char *args, void *context)
 {
     const char *arg1 = embeddedCliGetToken(args, 1);
-    if (arg1 == NULL) {
+    if (arg1 == NULL)
+    {
         LOG_I(TAG, "Usage: get-led [arg1]");
         return;
     }
@@ -80,7 +82,8 @@ void cli_set_led(EmbeddedCli *cli, char *args, void *context)
 void cli_get_adc(EmbeddedCli *cli, char *args, void *context)
 {
     const char *arg1 = embeddedCliGetToken(args, 1);
-    if (arg1 == NULL) {
+    if (arg1 == NULL)
+    {
         LOG_I(TAG, "Usage: get-adc [arg1]");
         return;
     }

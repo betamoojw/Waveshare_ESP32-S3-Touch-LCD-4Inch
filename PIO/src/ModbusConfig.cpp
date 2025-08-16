@@ -1,20 +1,22 @@
 #include "ModbusConfig.h"
 #include "LittleFS.h"
-#include <Arduino.h>  // for Serial functions
+#include <Arduino.h> // for Serial functions
 
 // Define the constants
 const size_t JSON_DOC_SIZE = 512; // Adjust as needed
-const char* CONFIG_FILE = "/config/modbus-config.json";
+const char *CONFIG_FILE = "/config/modbus-config.json";
 
-
-bool saveModbusConfig(const char* key, const char* value) {
+bool saveModbusConfig(const char *key, const char *value)
+{
     DynamicJsonDocument doc(JSON_DOC_SIZE);
     File file = LittleFS.open(CONFIG_FILE, "r+");
-    if (!file) {
+    if (!file)
+    {
         return false;
     }
     DeserializationError error = deserializeJson(doc, file);
-    if (error) {
+    if (error)
+    {
         file.close();
         return false;
     }
@@ -25,21 +27,27 @@ bool saveModbusConfig(const char* key, const char* value) {
     return true;
 }
 
-String getModbusConfig(const char* key) {
+String getModbusConfig(const char *key)
+{
     DynamicJsonDocument doc(JSON_DOC_SIZE);
     File file = LittleFS.open(CONFIG_FILE, "r");
-    if (!file) {
+    if (!file)
+    {
         return String("");
     }
     DeserializationError error = deserializeJson(doc, file);
-    if (error) {
+    if (error)
+    {
         file.close();
         return String("");
     }
     file.close();
-    if (doc.containsKey(key)) {
+    if (doc.containsKey(key))
+    {
         return doc[key].as<String>();
-    } else {
+    }
+    else
+    {
         return String("");
     }
 }
