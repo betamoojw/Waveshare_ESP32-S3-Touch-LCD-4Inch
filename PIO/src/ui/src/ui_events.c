@@ -3,80 +3,76 @@
 // LVGL version: 8.3.11
 // Project name: SmartPanel
 
+#include "../../modbus/modbus.h"
 #include "ui.h"
 #include <Arduino.h>
-#include "../../modbus/modbus.h"
 
-void config_set_backlight(lv_event_t * e)
+void config_set_backlight(lv_event_t *e)
 {
-	lv_obj_t *slider = lv_event_get_target(e);
-	float brightness = 100.0;
-	if (slider == ui_configBrightnessSlider)
+    lv_obj_t *slider = lv_event_get_target(e);
+    float brightness = 100.0;
+    if (slider == ui_configBrightnessSlider)
     {
-        brightness = (float)lv_slider_get_value(slider)/100.0;
-		// 0 is off, 0.5 is half and 1 is full brightness.
+        brightness = (float) lv_slider_get_value(slider) / 100.0;
+        // 0 is off, 0.5 is half and 1 is full brightness.
     }
-	
-}
+    static bool state = false;
 
-void DeskLightSwitch(lv_event_t * e)
-{
-	// Your code here
-	lv_obj_t * switcher = lv_event_get_target(e);
-	if (switcher == ui_Switch3)
+	uint16_t data[] = {0x0000};
+    const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
+    const uint16_t start_address = 32;
+
+    if (state)
     {
-		const uint16_t data[] = {0x0002};
-    	const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
-		const uint16_t start_address = 32;
-		modbus_client_set_parameters(data, start_address, num_registers);
+        data[0] = 1;
     }
-}
-
-void WallLightSwitch(lv_event_t * e)
-{
-	// Your code here
-	lv_obj_t * switcher = lv_event_get_target(e);
-	if (switcher == ui_Switch4)
+    else
     {
-		const uint16_t data[] = {0x0002};
-    	const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
-		const uint16_t start_address = 33;
-		modbus_client_set_parameters(data, start_address, num_registers);
+        data[0] = 0;
     }
+    modbus_client_set_parameters(data, start_address, num_registers);
+
+    state = !state;
 }
 
-void CircleLedSwitch(lv_event_t * e)
+void DeskLightSwitch(lv_event_t *e)
 {
-	// Your code here
-	lv_obj_t * switcher = lv_event_get_target(e);
-	if (switcher == ui_Switch7)
-    {
-		const uint16_t data[] = {0x0002};
-    	const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
-		const uint16_t start_address = 34;
-		modbus_client_set_parameters(data, start_address, num_registers);
-    }
+    const uint16_t data[] = {0x0002};
+    const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
+    const uint16_t start_address = 32;
+    modbus_client_set_parameters(data, start_address, num_registers);
 }
 
-void PendantLedSwitch(lv_event_t * e)
+void WallLightSwitch(lv_event_t *e)
 {
-	// Your code here
-	lv_obj_t * switcher = lv_event_get_target(e);
-	if (switcher == ui_Switch8)
-    {
-		const uint16_t data[] = {0x0002};
-    	const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
-		const uint16_t start_address = 35;
-		modbus_client_set_parameters(data, start_address, num_registers);
-    }
+    const uint16_t data[] = {0x0002};
+    const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
+    const uint16_t start_address = 33;
+    modbus_client_set_parameters(data, start_address, num_registers);
 }
 
-void CeilingLedSlider(lv_event_t * e)
+void CircleLedSwitch(lv_event_t *e)
 {
-	// Your code here
+    const uint16_t data[] = {0x0002};
+    const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
+    const uint16_t start_address = 34;
+    modbus_client_set_parameters(data, start_address, num_registers);
 }
 
-void CeilingLightSlider(lv_event_t * e)
+void PendantLedSwitch(lv_event_t *e)
 {
-	// Your code here
+    const uint16_t data[] = {0x0002};
+    const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
+    const uint16_t start_address = 35;
+    modbus_client_set_parameters(data, start_address, num_registers);
+}
+
+void CeilingLedSlider(lv_event_t *e)
+{
+    // Your code here
+}
+
+void CeilingLightSlider(lv_event_t *e)
+{
+    // Your code here
 }

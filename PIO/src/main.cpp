@@ -84,7 +84,7 @@ int32_t write_serial(const char port[], const uint8_t *buf, uint16_t count, int3
 }
 
 
-
+unsigned long lastPingTime = 0;
 
 void setup()
 {
@@ -161,6 +161,34 @@ void setup()
 
 void loop()
 {
+  unsigned long currentMillis = millis();
+  if ((unsigned long)(currentMillis - lastPingTime) >= (1000 * 5))
+  {
+      lastPingTime = currentMillis;
+
+      {
+        std::vector<uint16_t> params = {0, 0, 0, 0, 0, 0};
+        uint16_t quantity = params.size();
+        String tempStr = "";
+        for (uint16_t i = 0; i < quantity; i++)
+        {         
+            params[i] = random(0, 2);
+            if (i < quantity - 1)
+            {
+                tempStr += String(params[i]) + ",";
+            }
+            else
+            {
+                tempStr += String(params[i]);
+            }
+        }
+        // LOG_I(TAG, "Set holding Register: " + tempStr);
+        // Call function with vector's data
+        uint16_t address = 32;
+        // modbus_client_set_parameters(params.data(), address, quantity);
+      }
+  }
+
 #if defined(SMARTPANEL_ENABLE_CLI)
   cli_task();
 #endif
@@ -174,25 +202,5 @@ void loop()
 #endif
 
 
-  {
-    std::vector<uint16_t> params = {0, 0, 0, 0, 0, 0};
-    uint16_t quantity = params.size();
-    String tempStr = "";
-    for (uint16_t i = 0; i < quantity; i++)
-    {         
-        params[i] = random(0, 2);
-        if (i < quantity - 1)
-        {
-            tempStr += String(params[i]) + ",";
-        }
-        else
-        {
-            tempStr += String(params[i]);
-        }
-    }
-    // LOG_I(TAG, "Set holding Register: " + tempStr);
-    // Call function with vector's data
-    uint16_t address = 32;
-    // modbus_client_set_parameters(params.data(), address, quantity);
-  }
+  
 }
