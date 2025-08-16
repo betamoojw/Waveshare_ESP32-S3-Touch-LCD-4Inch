@@ -28,24 +28,30 @@ lv_obj_t * ui_ContentLight;
 lv_obj_t * ui_lightSwitch0;
 lv_obj_t * ui_Image2;
 lv_obj_t * ui_Label2;
+void ui_event_Switch3(lv_event_t * e);
 lv_obj_t * ui_Switch3;
 lv_obj_t * ui_lightSwitch1;
 lv_obj_t * ui_Image3;
 lv_obj_t * ui_Label4;
+void ui_event_Switch4(lv_event_t * e);
 lv_obj_t * ui_Switch4;
 lv_obj_t * ui_lightSwitch2;
 lv_obj_t * ui_Image8;
 lv_obj_t * ui_Label7;
+void ui_event_Switch7(lv_event_t * e);
 lv_obj_t * ui_Switch7;
 lv_obj_t * ui_lightSwitch3;
 lv_obj_t * ui_Image9;
 lv_obj_t * ui_Label8;
+void ui_event_Switch8(lv_event_t * e);
 lv_obj_t * ui_Switch8;
+void ui_event_lightDimming2(lv_event_t * e);
 lv_obj_t * ui_lightDimming2;
 lv_obj_t * ui_Image6;
 lv_obj_t * ui_Label5;
 lv_obj_t * ui_Switch5;
 lv_obj_t * ui_Slider3;
+void ui_event_lightDimming3(lv_event_t * e);
 lv_obj_t * ui_lightDimming3;
 lv_obj_t * ui_Image7;
 lv_obj_t * ui_Label6;
@@ -251,6 +257,8 @@ lv_obj_t * uic_configLanguage;
 lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
+const lv_img_dsc_t * ui_imgset_1986574229[1] = {&ui_img_1658605586};
+const lv_img_dsc_t * ui_imgset_619018471[1] = {&ui_img_1423884986};
 const lv_img_dsc_t * ui_imgset_351488482[1] = {&ui_img_2064658507};
 const lv_img_dsc_t * ui_imgset_1604542579[1] = {&ui_img_1176167512};
 const lv_img_dsc_t * ui_imgset_1104495342[1] = {&ui_img_2032833556};
@@ -264,8 +272,10 @@ const lv_img_dsc_t * ui_imgset_710967466[1] = {&ui_img_686816875};
 const lv_img_dsc_t * ui_imgset_578450504[1] = {&ui_img_540379319};
 const lv_img_dsc_t * ui_imgset_1497443836[1] = {&ui_img_1387712441};
 const lv_img_dsc_t * ui_imgset_1812689140[1] = {&ui_img_591590446};
+const lv_img_dsc_t * ui_imgset_1196421701[1] = {&ui_img_1310322208};
 const lv_img_dsc_t * ui_imgset_781618292[1] = {&ui_img_1729470306};
 const lv_img_dsc_t * ui_imgset_1025241861[1] = {&ui_img_1735427615};
+const lv_img_dsc_t * ui_imgset_1766742700[1] = {&ui_img_789797763};
 const lv_img_dsc_t * ui_imgset_575017621[1] = {&ui_img_1742922419};
 const lv_img_dsc_t * ui_imgset_406751859[1] = {&ui_img_222132382};
 const lv_img_dsc_t * ui_imgset_801595910[1] = {&ui_img_414704204};
@@ -282,10 +292,6 @@ const lv_img_dsc_t * ui_imgset_1008528466[1] = {&ui_img_890010057};
 const lv_img_dsc_t * ui_imgset_724146983[1] = {&ui_img_84168725};
 const lv_img_dsc_t * ui_imgset_1771410100[1] = {&ui_img_887305853};
 const lv_img_dsc_t * ui_imgset_535857063[1] = {&ui_img_364238874};
-const lv_img_dsc_t * ui_imgset_1986574229[1] = {&ui_img_1658605586};
-const lv_img_dsc_t * ui_imgset_1196421701[1] = {&ui_img_1310322208};
-const lv_img_dsc_t * ui_imgset_619018471[1] = {&ui_img_1423884986};
-const lv_img_dsc_t * ui_imgset_1766742700[1] = {&ui_img_789797763};
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
@@ -335,6 +341,60 @@ void ui_event_layoutBtn(lv_event_t * e)
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_main, LV_SCR_LOAD_ANIM_FADE_ON, 800, 0, &ui_main_screen_init);
+    }
+}
+
+void ui_event_Switch3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        DeskLightSwitch(e);
+    }
+}
+
+void ui_event_Switch4(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        WallLightSwitch(e);
+    }
+}
+
+void ui_event_Switch7(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        CircleLedSwitch(e);
+    }
+}
+
+void ui_event_Switch8(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        PendantLedSwitch(e);
+    }
+}
+
+void ui_event_lightDimming2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        CeilingLedSlider(e);
+    }
+}
+
+void ui_event_lightDimming3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        CeilingLightSlider(e);
     }
 }
 
@@ -585,7 +645,7 @@ void ui_event_Switch1(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        _ui_slider_set_property(ui_Slider4, _UI_SLIDER_PROPERTY_VALUE_WITH_ANIM, 100);
+        _ui_slider_set_property(ui_configBrightnessSlider, _UI_SLIDER_PROPERTY_VALUE_WITH_ANIM, 100);
     }
 }
 

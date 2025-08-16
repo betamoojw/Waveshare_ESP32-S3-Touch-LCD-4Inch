@@ -1,8 +1,8 @@
 #define SMARTPANEL_DEFINE_GLOBAL_VARS // only in one source file, main.cpp!
 #include "main.h"
 #include <Arduino.h>
+#include <Logger.h>
 #include <string>
-#include "HWCDC.h"
 #include <LittleFS.h>
 #include "file_sys_utils.h"
 #include <ESP_Panel_Library.h>
@@ -16,8 +16,6 @@
 #include <ui.h>
 
 #include "web_server.h"
-
-HWCDC USBSerial; // Definition of the USBSerial object
 
 #if defined(SMARTPANEL_ENABLE_RS485)
 #include <HardwareSerial.h>
@@ -41,7 +39,7 @@ void task_rs485_interface_loop(void *pvParameters)
         {
           // Send the entire buffer via Serial2
           Serial2.println(buffer);
-          USBSerial.println(buffer);
+          LOG_I(TAG, (buffer);
           delay(10);
           // Reset buffer and size for the next input
           bufferSize = 0;
@@ -70,6 +68,7 @@ void task_rs485_interface_loop(void *pvParameters)
 static bool driver_installed = false; // Flag to check if the driver is installed
 ESP_IOExpander *expander = NULL;
 
+const char *TAG = "Display";
 
 
 int32_t read_serial(const char port[], uint8_t *buf, uint16_t count, int32_t byte_timeout_ms)
@@ -89,12 +88,7 @@ int32_t write_serial(const char port[], const uint8_t *buf, uint16_t count, int3
 
 void setup()
 {
-  USBSerial.begin(115200);
-  USBSerial.println("USBSerial initialized.");
-
-  char msg[128];
-  snprintf(msg, sizeof(msg), "---Smart Panel: %s %d INIT---", SMARTPANEL_VERSION, VERSION);
-  USBSerial.println(msg);
+  LOG_I(TAG, "---Smart Panel: %s %d INIT---", SMARTPANEL_VERSION, VERSION);
 
   fs_mount();
 
@@ -106,9 +100,9 @@ void setup()
 
   String title = "Smart Panel";
 
-  USBSerial.println(title + " start");
+  LOG_I(TAG, title + " start");
 
-  USBSerial.println("Initialize panel device");
+ LOG_I(TAG, "Initialize panel device");
   ESP_Panel *panel = new ESP_Panel();
   panel->init();
 #if LVGL_PORT_AVOID_TEAR
@@ -119,10 +113,10 @@ void setup()
 #endif
   panel->begin();
 
-  USBSerial.println("Initialize LVGL");
+  LOG_I(TAG, "Initialize LVGL");
   lvgl_port_init(panel->getLcd(), panel->getTouch());
 
-  USBSerial.println("Create UI");
+  LOG_I(TAG, "Create UI");
   /* Lock the mutex due to the LVGL APIs are not thread-safe */
   lvgl_port_lock(-1);
 
@@ -139,7 +133,7 @@ void setup()
 
   lvgl_port_unlock();
 
-  USBSerial.println(title + " end");
+  LOG_I(TAG, title + " end");
 
 #if defined(SMARTPANEL_ENABLE_RS485)
   Serial2.begin(115200, SERIAL_8N1, RS485_RXD_PIN, RS485_TXD_PIN);
@@ -199,6 +193,6 @@ void loop()
     // LOG_I(TAG, "Set holding Register: " + tempStr);
     // Call function with vector's data
     uint16_t address = 32;
-    modbus_client_set_parameters(params.data(), address, quantity);
+    // modbus_client_set_parameters(params.data(), address, quantity);
   }
 }

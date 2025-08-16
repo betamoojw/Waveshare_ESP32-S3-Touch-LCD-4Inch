@@ -3,10 +3,9 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include "main.h"
-#include "HWCDC.h"
+#include <Logger.h>
 
-extern HWCDC USBSerial; // Declaration of the external USBSerial object
-
+#define TAG "WEB_SERVER"
 AsyncWebServer server(80);
 
 const char *ssid = "MX-09-1502";
@@ -25,12 +24,11 @@ void ws_init()
     WiFi.begin(ssid, password);
     if (WiFi.waitForConnectResult() != WL_CONNECTED)
     {
-        USBSerial.printf("WiFi Failed!\n");
+        LOG_E(TAG, "WiFi Failed!\n");
         return;
     }
 
-    USBSerial.print("IP Address: ");
-    USBSerial.println(WiFi.localIP());
+    LOG_I(TAG, "IP Address: %s", WiFi.localIP());
 
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send(200, "text/plain", "Hello, world"); });

@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include "io_expander_warapper.h"
-#include "HWCDC.h"
+#include <Logger.h>
 
-extern HWCDC USBSerial; // Declaration of the external USBSerial object
+#define TAG "IO-EXPANDER"
 
 void io_expander_init(ESP_IOExpander *expander)
 {
@@ -12,10 +12,10 @@ void io_expander_init(ESP_IOExpander *expander)
 
     expander->init();
     expander->begin();
-    USBSerial.println("IO Expander initialized successfully.");
+    LOG_I(TAG, "IO Expander initialized successfully.");
 
 
-    USBSerial.println("IO Expander Original status:");
+    LOG_I(TAG, "IO Expander Original status:");
     expander->printStatus();
     expander->pinMode(EXP_IO_BEE_EN, OUTPUT);
     expander->digitalWrite(EXP_IO_BEE_EN, HIGH);

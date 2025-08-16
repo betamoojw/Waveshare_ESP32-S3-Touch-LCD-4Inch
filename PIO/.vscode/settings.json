@@ -21,6 +21,9 @@
         "chrono": "cpp",
         "typeinfo": "cpp",
         "functional": "cpp",
-        "compare": "cpp"
+        "compare": "cpp",
+        "numbers": "cpp",
+        "modbus.h": "c",
+        "main.h": "c"
     }
 }

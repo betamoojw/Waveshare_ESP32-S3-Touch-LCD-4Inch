@@ -5,6 +5,7 @@
 
 #include "ui.h"
 #include <Arduino.h>
+#include "../../modbus/modbus.h"
 
 void config_set_backlight(lv_event_t * e)
 {
@@ -16,4 +17,66 @@ void config_set_backlight(lv_event_t * e)
 		// 0 is off, 0.5 is half and 1 is full brightness.
     }
 	
+}
+
+void DeskLightSwitch(lv_event_t * e)
+{
+	// Your code here
+	lv_obj_t * switcher = lv_event_get_target(e);
+	if (switcher == ui_Switch3)
+    {
+		const uint16_t data[] = {0x0002};
+    	const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
+		const uint16_t start_address = 32;
+		modbus_client_set_parameters(data, start_address, num_registers);
+    }
+}
+
+void WallLightSwitch(lv_event_t * e)
+{
+	// Your code here
+	lv_obj_t * switcher = lv_event_get_target(e);
+	if (switcher == ui_Switch4)
+    {
+		const uint16_t data[] = {0x0002};
+    	const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
+		const uint16_t start_address = 33;
+		modbus_client_set_parameters(data, start_address, num_registers);
+    }
+}
+
+void CircleLedSwitch(lv_event_t * e)
+{
+	// Your code here
+	lv_obj_t * switcher = lv_event_get_target(e);
+	if (switcher == ui_Switch7)
+    {
+		const uint16_t data[] = {0x0002};
+    	const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
+		const uint16_t start_address = 34;
+		modbus_client_set_parameters(data, start_address, num_registers);
+    }
+}
+
+void PendantLedSwitch(lv_event_t * e)
+{
+	// Your code here
+	lv_obj_t * switcher = lv_event_get_target(e);
+	if (switcher == ui_Switch8)
+    {
+		const uint16_t data[] = {0x0002};
+    	const uint16_t num_registers = sizeof(data) / sizeof(data[0]);
+		const uint16_t start_address = 35;
+		modbus_client_set_parameters(data, start_address, num_registers);
+    }
+}
+
+void CeilingLedSlider(lv_event_t * e)
+{
+	// Your code here
+}
+
+void CeilingLightSlider(lv_event_t * e)
+{
+	// Your code here
 }

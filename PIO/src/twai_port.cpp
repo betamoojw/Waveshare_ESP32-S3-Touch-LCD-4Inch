@@ -1,11 +1,11 @@
 #include "main.h"
 #include "twai_port.h"
 #include <ui.h>
-#include "HWCDC.h"
+#include <Logger.h>
 
 #if defined(SMARTPANEL_ENABLE_CAN)
 
-extern HWCDC USBSerial; // Declaration of the external USBSerial object
+#define TAG "TWAI-INTERFACE"
 
 unsigned long previousMillis = 0;
 #define TRANSMIT_RATE_MS 1000
@@ -16,27 +16,27 @@ static void handle_rx_message(twai_message_t &message)
   // Process received message
   if (message.extd)
   {
-    USBSerial.println("Message is in Extended Format"); // Print if the message is in extended format
+    LOG_I(TAG, "Message is in Extended Format"); // Print if the message is in extended format
   }
   else
   {
-    USBSerial.println("Message is in Standard Format"); // Print if the message is in standard format
+    LOG_I(TAG, "Message is in Standard Format"); // Print if the message is in standard format
   }
-  USBSerial.printf("ID: %x\nByte:", message.identifier); // Print message ID
+  LOG_I(TAG, "ID: %x\nByte:", message.identifier); // Print message ID
   if (!(message.rtr))
   { // Check if it is not a remote transmission request
     for (int i = 0; i < message.data_length_code; i++)
     {
-      USBSerial.printf(" %d = %02x,", i, message.data[i]); // Print each byte of the message data
+      LOG_I(TAG, " %d = %02x,", i, message.data[i]); // Print each byte of the message data
     }
-    USBSerial.println(""); // Print a new line
+  LOG_I(TAG, ""); // Print a new line
   }
 }
 
 // Function to initialize the TWAI driver
 bool twai_init()
 {
-  USBSerial.println("Driver installing");
+LOG_I(TAG, "Driver installing");
   // Initialize configuration structures using macro initializers
   twai_general_config_t g_config = TWAI_GENERAL_CONFIG_DEFAULT((gpio_num_t)CAN_TXD_PIN, (gpio_num_t)CAN_RXD_PIN, TWAI_MODE_NORMAL);
   twai_timing_config_t t_config = TWAI_TIMING_CONFIG_250KBITS();   // set 250Kbps
@@ -45,28 +45,28 @@ bool twai_init()
   // Install TWAI driver
   if (twai_driver_install(&g_config, &t_config, &f_config) != ESP_OK)
   {
-    USBSerial.println("Failed to install driver"); // Print error message
+  LOG_E(TAG, "Failed to install driver"); // Print error message
     return false;                                  // Return false if driver installation fails
   }
-  USBSerial.println("Driver installed"); // Print success message
+LOG_I(TAG, "Driver installed"); // Print success message
 
   // Start TWAI driver
   if (twai_start() != ESP_OK)
   {
-    USBSerial.println("Failed to start driver"); // Print error message
+  LOG_E(TAG, "Failed to start driver"); // Print error message
     return false;                                // Return false if starting the driver fails
   }
-  USBSerial.println("Driver started"); // Print success message
+LOG_I(TAG, "Driver started"); // Print success message
 
   // Reconfigure alerts to detect frame receive, Bus-Off error, and RX queue full states
   uint32_t alerts_to_enable = TWAI_ALERT_RX_DATA | TWAI_ALERT_ERR_PASS | TWAI_ALERT_BUS_ERROR | TWAI_ALERT_RX_QUEUE_FULL | TWAI_ALERT_TX_IDLE | TWAI_ALERT_TX_SUCCESS | TWAI_ALERT_TX_FAILED | TWAI_ALERT_ERR_PASS | TWAI_ALERT_BUS_ERROR;
   if (twai_reconfigure_alerts(alerts_to_enable, NULL) == ESP_OK)
   {
-    USBSerial.println("CAN Alerts reconfigured"); // Print success message
+  LOG_W(TAG, "CAN Alerts reconfigured"); // Print success message
   }
   else
   {
-    USBSerial.println("Failed to reconfigure alerts"); // Print error message
+  LOG_E(TAG, "Failed to reconfigure alerts"); // Print error message
     return false;                                      // Return false if alert reconfiguration fails
   }
 
@@ -86,19 +86,19 @@ void twai_receive()
   // Handle alerts
   if (alerts_triggered & TWAI_ALERT_ERR_PASS)
   {
-    USBSerial.println("Alert: TWAI controller has become error passive."); // Print passive error alert
+  LOG_E(TAG, "Alert: TWAI controller has become error passive."); // Print passive error alert
   }
   if (alerts_triggered & TWAI_ALERT_BUS_ERROR)
   {
-    USBSerial.println("Alert: A (Bit, Stuff, CRC, Form, ACK) error has occurred on the bus."); // Print bus error alert
-    USBSerial.printf("Bus error count: %d\n", twaistatus.bus_error_count);                     // Print bus error count
+    LOG_E(TAG, "Alert: A (Bit, Stuff, CRC, Form, ACK) error has occurred on the bus."); // Print bus error alert
+    LOG_E(TAG, "Bus error count: %d\n", twaistatus.bus_error_count);                     // Print bus error count
   }
   if (alerts_triggered & TWAI_ALERT_RX_QUEUE_FULL)
   {
-    USBSerial.println("Alert: The RX queue is full causing a received frame to be lost."); // Print RX queue full alert
-    USBSerial.printf("RX buffered: %d\t", twaistatus.msgs_to_rx);                          // Print buffered RX messages
-    USBSerial.printf("RX missed: %d\t", twaistatus.rx_missed_count);                       // Print missed RX count
-    USBSerial.printf("RX overrun %d\n", twaistatus.rx_overrun_count);                      // Print RX overrun count
+  LOG_I(TAG, "Alert: The RX queue is full causing a received frame to be lost."); // Print RX queue full alert
+    LOG_I(TAG, "RX buffered: %d\t", twaistatus.msgs_to_rx);                          // Print buffered RX messages
+    LOG_I(TAG, "RX missed: %d\t", twaistatus.rx_missed_count);                       // Print missed RX count
+    LOG_I(TAG, "RX overrun %d\n", twaistatus.rx_overrun_count);                      // Print RX overrun count
   }
 
   // Check if message is received
@@ -147,24 +147,24 @@ void twai_transmit()
   // Handle alerts
   if (alerts_triggered & TWAI_ALERT_ERR_PASS)
   {
-    USBSerial.println("Alert: TWAI controller has become error passive."); // Print passive error alert
+  LOG_E(TAG, "Alert: TWAI controller has become error passive."); // Print passive error alert
   }
   if (alerts_triggered & TWAI_ALERT_BUS_ERROR)
   {
-    USBSerial.println("Alert: A (Bit, Stuff, CRC, Form, ACK) error has occurred on the bus."); // Print bus error alert
-    USBSerial.printf("Bus error count: %d\n", twaistatus.bus_error_count);                     // Print bus error count
+  LOG_I(TAG, "Alert: A (Bit, Stuff, CRC, Form, ACK) error has occurred on the bus."); // Print bus error alert
+    LOG_E(TAG, "Bus error count: %d\n", twaistatus.bus_error_count);                     // Print bus error count
   }
   if (alerts_triggered & TWAI_ALERT_TX_FAILED)
   {
-    USBSerial.println("Alert: The Transmission failed.");            // Print transmission failure alert
-    USBSerial.printf("TX buffered: %d\t", twaistatus.msgs_to_tx);    // Print buffered TX messages
-    USBSerial.printf("TX error: %d\t", twaistatus.tx_error_counter); // Print TX error count
-    USBSerial.printf("TX failed: %d\n", twaistatus.tx_failed_count); // Print failed TX count
+  LOG_W(TAG, "Alert: The Transmission failed.");            // Print transmission failure alert
+    LOG_E(TAG, "TX buffered: %d\t", twaistatus.msgs_to_tx);    // Print buffered TX messages
+    LOG_E(TAG, "TX error: %d\t", twaistatus.tx_error_counter); // Print TX error count
+    LOG_E(TAG, "TX failed: %d\n", twaistatus.tx_failed_count); // Print failed TX count
   }
   if (alerts_triggered & TWAI_ALERT_TX_SUCCESS)
   {
-    USBSerial.println("Alert: The Transmission was successful."); // Print successful transmission alert
-    USBSerial.printf("TX buffered: %d\t", twaistatus.msgs_to_tx); // Print buffered TX messages
+  LOG_I(TAG, "Alert: The Transmission was successful."); // Print successful transmission alert
+    LOG_I(TAG, "TX buffered: %d\t", twaistatus.msgs_to_tx); // Print buffered TX messages
   }
 
   // Send message

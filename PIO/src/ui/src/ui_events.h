@@ -11,7 +11,13 @@ extern "C" {
 #endif
 
 void config_set_backlight(lv_event_t * e);
-
+void DeskLightSwitch(lv_event_t * e);
+void WallLightSwitch(lv_event_t * e);
+void CircleLedSwitch(lv_event_t * e);
+void PendantLedSwitch(lv_event_t * e);
+void CeilingLedSlider(lv_event_t * e);
+void CeilingLightSlider(lv_event_t * e);
+void config_set_backlight(lv_event_t * e);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

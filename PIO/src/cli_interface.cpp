@@ -1,13 +1,13 @@
 #define EMBEDDED_CLI_IMPL
 #include "cli_interface.h"
 #include "cli_commands.h"
-#include "HWCDC.h"
-
-extern HWCDC USBSerial; // Declaration of the external USBSerial object
+#include <Logger.h>
 
 // Global CLI Variables (Definition)
 EmbeddedCli *cli;
 CLI_UINT cliBuffer[BYTES_TO_CLI_UINTS(CLI_BUFFER_SIZE)];
+
+#define TAG "CLI-INTERFACE"
 
 void cli_init()
 {
@@ -23,11 +23,9 @@ void cli_init()
 
     if (cli == NULL)
     {
-        USBSerial.println(F("Cli was not created. Check sizes!"));
-        USBSerial.print(F("CLI_BUFFER_SIZE: "));
-        USBSerial.println(CLI_BUFFER_SIZE);
-        USBSerial.print(F("Required size: "));
-        USBSerial.println(embeddedCliRequiredSize(config));
+        LOG_E(TAG, "Cli was not created. Check sizes!");
+        LOG_E(TAG, "CLI_BUFFER_SIZE: %d", CLI_BUFFER_SIZE);
+        LOG_E(TAG, "Required size: %d", embeddedCliRequiredSize(config));
         while (1)
             ; // Halt if CLI fails to initialize
     }
@@ -87,7 +85,7 @@ void cli_init()
 
     cli->onCommand = cli_command;
     cli->writeChar = writeChar;
-    USBSerial.println(F("Cli has started. Enter your commands."));
+    LOG_I(TAG, "Cli has started. Enter your commands.");
 }
 
 void cli_task()
@@ -95,14 +93,14 @@ void cli_task()
     if (cli == NULL)
         return;
 
-    while (USBSerial.available() > 0)
+    while (SERIAL_DBG.available() > 0)
     {
-        embeddedCliReceiveChar(cli, USBSerial.read());
+        embeddedCliReceiveChar(cli, SERIAL_DBG.read());
     }
     embeddedCliProcess(cli);
 }
 
 void writeChar(EmbeddedCli *embeddedCli, char c)
 {
-    USBSerial.write((uint8_t *)&c, 1);
+    SERIAL_DBG.write((uint8_t *)&c, 1);
 }

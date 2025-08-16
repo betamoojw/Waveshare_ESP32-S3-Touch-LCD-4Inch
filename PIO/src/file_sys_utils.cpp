@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include "FS.h"
 #include <LittleFS.h>
-#include "HWCDC.h"
+#include <Logger.h>
 
-extern HWCDC USBSerial; // Declaration of the external USBSerial object
+#define TAG "FS-UTILS"
 
 #define FORMAT_LITTLEFS_IF_FAILED true
 
@@ -13,11 +13,11 @@ bool fs_mount()
 
   if (LittleFS.begin(FORMAT_LITTLEFS_IF_FAILED))
   {
-    USBSerial.println("LittleFS Mount Successful");
+    LOG_I(TAG, "LittleFS Mount Successful");
   }
   else
   {
-    USBSerial.println("LittleFS Mount Failed");
+    LOG_E(TAG, "LittleFS Mount Failed");
     retVal = false;
   }
 
@@ -26,17 +26,17 @@ bool fs_mount()
 
 void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
 {
-  USBSerial.printf("Listing directory: %s\r\n", dirname);
+  LOG_I(TAG, "Listing directory: %s\r\n", dirname);
 
   File root = fs.open(dirname);
   if (!root)
   {
-    USBSerial.println("- failed to open directory");
+    LOG_I(TAG, "- failed to open directory");
     return;
   }
   if (!root.isDirectory())
   {
-    USBSerial.println(" - not a directory");
+    LOG_I(TAG, " - not a directory");
     return;
   }
 
@@ -45,8 +45,7 @@ void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
   {
     if (file.isDirectory())
     {
-      USBSerial.print("  DIR : ");
-      USBSerial.println(file.name());
+      LOG_I(TAG, "  DIR : %s", file.name());
       if (levels)
       {
         listDir(fs, file.path(), levels - 1);
@@ -54,10 +53,8 @@ void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
     }
     else
     {
-      USBSerial.print("  FILE: ");
-      USBSerial.print(file.name());
-      USBSerial.print("\tSIZE: ");
-      USBSerial.println(file.size());
+      LOG_I(TAG, "  FILE: %s", file.name());
+      LOG_I(TAG, "\tSIZE: %d", file.size());
     }
     file = root.openNextFile();
   }
@@ -65,114 +62,114 @@ void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
 
 void createDir(fs::FS &fs, const char *path)
 {
-  USBSerial.printf("Creating Dir: %s\n", path);
+  LOG_I(TAG, "Creating Dir: %s\n", path);
   if (fs.mkdir(path))
   {
-    USBSerial.println("Dir created");
+    LOG_I(TAG, "Dir created");
   }
   else
   {
-    USBSerial.println("mkdir failed");
+    LOG_I(TAG, "mkdir failed");
   }
 }
 
 void removeDir(fs::FS &fs, const char *path)
 {
-  USBSerial.printf("Removing Dir: %s\n", path);
+  LOG_I(TAG, "Removing Dir: %s\n", path);
   if (fs.rmdir(path))
   {
-    USBSerial.println("Dir removed");
+    LOG_I(TAG, "Dir removed");
   }
   else
   {
-    USBSerial.println("rmdir failed");
+    LOG_I(TAG, "rmdir failed");
   }
 }
 
 void readFile(fs::FS &fs, const char *path)
 {
-  USBSerial.printf("Reading file: %s\r\n", path);
+  LOG_I(TAG, "Reading file: %s\r\n", path);
 
   File file = fs.open(path);
   if (!file || file.isDirectory())
   {
-    USBSerial.println("- failed to open file for reading");
+    LOG_I(TAG, "- failed to open file for reading");
     return;
   }
 
-  USBSerial.println("- read from file:");
+  LOG_I(TAG, "- read from file:");
   while (file.available())
   {
-    USBSerial.write(file.read());
+    SERIAL_DBG.write(file.read());
   }
   file.close();
 }
 
 void writeFile(fs::FS &fs, const char *path, const char *message)
 {
-  USBSerial.printf("Writing file: %s\r\n", path);
+  LOG_I(TAG, "Writing file: %s\r\n", path);
 
   File file = fs.open(path, FILE_WRITE);
   if (!file)
   {
-    USBSerial.println("- failed to open file for writing");
+    LOG_I(TAG, "- failed to open file for writing");
     return;
   }
   if (file.print(message))
   {
-    USBSerial.println("- file written");
+    LOG_I(TAG, "- file written");
   }
   else
   {
-    USBSerial.println("- write failed");
+    LOG_I(TAG, "- write failed");
   }
   file.close();
 }
 
 void appendFile(fs::FS &fs, const char *path, const char *message)
 {
-  USBSerial.printf("Appending to file: %s\r\n", path);
+  LOG_I(TAG, "Appending to file: %s\r\n", path);
 
   File file = fs.open(path, FILE_APPEND);
   if (!file)
   {
-    USBSerial.println("- failed to open file for appending");
+    LOG_I(TAG, "- failed to open file for appending");
     return;
   }
   if (file.print(message))
   {
-    USBSerial.println("- message appended");
+    LOG_I(TAG, "- message appended");
   }
   else
   {
-    USBSerial.println("- append failed");
+    LOG_I(TAG, "- append failed");
   }
   file.close();
 }
 
 void renameFile(fs::FS &fs, const char *path1, const char *path2)
 {
-  USBSerial.printf("Renaming file %s to %s\r\n", path1, path2);
+  LOG_I(TAG, "Renaming file %s to %s\r\n", path1, path2);
   if (fs.rename(path1, path2))
   {
-    USBSerial.println("- file renamed");
+    LOG_I(TAG, "- file renamed");
   }
   else
   {
-    USBSerial.println("- rename failed");
+    LOG_I(TAG, "- rename failed");
   }
 }
 
 void deleteFile(fs::FS &fs, const char *path)
 {
-  USBSerial.printf("Deleting file: %s\r\n", path);
+  LOG_I(TAG, "Deleting file: %s\r\n", path);
   if (fs.remove(path))
   {
-    USBSerial.println("- file deleted");
+    LOG_I(TAG, "- file deleted");
   }
   else
   {
-    USBSerial.println("- delete failed");
+    LOG_I(TAG, "- delete failed");
   }
 }
 
@@ -184,7 +181,7 @@ void writeFile2(fs::FS &fs, const char *path, const char *message)
   {
     if (strchr(path, '/'))
     {
-      USBSerial.printf("Create missing folders of: %s\r\n", path);
+      LOG_I(TAG, "Create missing folders of: %s\r\n", path);
       char *pathStr = strdup(path);
       if (pathStr)
       {
@@ -201,35 +198,35 @@ void writeFile2(fs::FS &fs, const char *path, const char *message)
     }
   }
 
-  USBSerial.printf("Writing file to: %s\r\n", path);
+  LOG_I(TAG, "Writing file to: %s\r\n", path);
   File file = fs.open(path, FILE_WRITE);
   if (!file)
   {
-    USBSerial.println("- failed to open file for writing");
+    LOG_I(TAG, "- failed to open file for writing");
     return;
   }
   if (file.print(message))
   {
-    USBSerial.println("- file written");
+    LOG_I(TAG, "- file written");
   }
   else
   {
-    USBSerial.println("- write failed");
+    LOG_I(TAG, "- write failed");
   }
   file.close();
 }
 
 void deleteFile2(fs::FS &fs, const char *path)
 {
-  USBSerial.printf("Deleting file and empty folders on path: %s\r\n", path);
+  LOG_I(TAG, "Deleting file and empty folders on path: %s\r\n", path);
 
   if (fs.remove(path))
   {
-    USBSerial.println("- file deleted");
+    LOG_I(TAG, "- file deleted");
   }
   else
   {
-    USBSerial.println("- delete failed");
+    LOG_I(TAG, "- delete failed");
   }
 
   char *pathStr = strdup(path);
@@ -238,7 +235,7 @@ void deleteFile2(fs::FS &fs, const char *path)
     char *ptr = strrchr(pathStr, '/');
     if (ptr)
     {
-      USBSerial.printf("Removing all empty folders on path: %s\r\n", path);
+      LOG_I(TAG, "Removing all empty folders on path: %s\r\n", path);
     }
     while (ptr)
     {
@@ -252,31 +249,31 @@ void deleteFile2(fs::FS &fs, const char *path)
 
 void testFileIO(fs::FS &fs, const char *path)
 {
-  USBSerial.printf("Testing file I/O with %s\r\n", path);
+  LOG_I(TAG, "Testing file I/O with %s\r\n", path);
 
   static uint8_t buf[512];
   size_t len = 0;
   File file = fs.open(path, FILE_WRITE);
   if (!file)
   {
-    USBSerial.println("- failed to open file for writing");
+    LOG_I(TAG, "- failed to open file for writing");
     return;
   }
 
   size_t i;
-  USBSerial.print("- writing");
+  LOG_I(TAG, "- writing");
   uint32_t start = millis();
   for (i = 0; i < 2048; i++)
   {
     if ((i & 0x001F) == 0x001F)
     {
-      USBSerial.print(".");
+      LOG_I(TAG, ".");
     }
     file.write(buf, 512);
   }
-  USBSerial.println("");
+  LOG_I(TAG, "");
   uint32_t end = millis() - start;
-  USBSerial.printf(" - %u bytes written in %lu ms\r\n", 2048 * 512, end);
+  LOG_I(TAG, " - %u bytes written in %lu ms\r\n", 2048 * 512, end);
   file.close();
 
   file = fs.open(path);
@@ -288,7 +285,7 @@ void testFileIO(fs::FS &fs, const char *path)
     len = file.size();
     size_t flen = len;
     start = millis();
-    USBSerial.print("- reading");
+    LOG_I(TAG, "- reading");
     while (len)
     {
       size_t toRead = len;
@@ -299,17 +296,17 @@ void testFileIO(fs::FS &fs, const char *path)
       file.read(buf, toRead);
       if ((i++ & 0x001F) == 0x001F)
       {
-        USBSerial.print(".");
+        LOG_I(TAG, ".");
       }
       len -= toRead;
     }
-    USBSerial.println("");
+    LOG_I(TAG, "");
     end = millis() - start;
-    USBSerial.printf("- %u bytes read in %lu ms\r\n", flen, end);
+    LOG_I(TAG, "- %u bytes read in %lu ms\r\n", flen, end);
     file.close();
   }
   else
   {
-    USBSerial.println("- failed to open file for reading");
+    LOG_I(TAG, "- failed to open file for reading");
   }
 }
