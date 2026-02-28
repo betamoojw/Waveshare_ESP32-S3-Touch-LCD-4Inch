@@ -9,6 +9,7 @@
 It integrates lighting, curtains, HVAC, scenes, energy monitoring, music, and security into a single unified touch interface — supporting professional building protocols (KNX / Modbus) and open smart home ecosystems (MQTT / Home Assistant).
 
 ## 🧠 Architecture Overview
+```
 +------------------------------------------------------------+
 |                       LVGL GUI Layer                       |
 +------------------------------------------------------------+
@@ -25,6 +26,7 @@ It integrates lighting, curtains, HVAC, scenes, energy monitoring, music, and se
 +------------------------------------------------------------+
 |                      ESP32-S3/P4 MCU                       |
 +------------------------------------------------------------+
+```
 
 ## 🔧 Hardware Platform
 
