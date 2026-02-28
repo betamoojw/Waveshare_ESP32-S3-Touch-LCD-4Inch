@@ -8,6 +8,10 @@
 
 It integrates lighting, curtains, HVAC, scenes, energy monitoring, music, and security into a single unified touch interface — supporting professional building protocols (KNX / Modbus) and open smart home ecosystems (MQTT / Home Assistant).
 
+**Demo Video**
+[Watch the preview demo video](assets/smart_panel_demo.mp4)
+[Watch the modbus RTU control demo video](assets/modbus_RTU_control_demo.mp4)
+
 ## 🧠 Architecture Overview
 ```
 +------------------------------------------------------------+
@@ -161,6 +165,17 @@ LVGL
 - Flash encryption
 - Role-based UI access
 - Local PIN protection
+
+
+
+### 🎡 Setting
+
+![Screenshot of setting](assets/setting.png)
+
+- Connectivity configuration
+- Language choose 
+- Brightness
+- Others
 
 
 ## 🗂 Repository Structure
